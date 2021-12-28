@@ -7,6 +7,7 @@ import Department from '../../Container/Department/index'
 import Collectioncenter from '../../Container/Collectioncenter/index'
 import Centertype from '../../Container/Centertype/index'
 import Checklistmodules from '../../Container/Checklistmodules/index'
+import Checklist from '../../Container/Checklist'
 
 
 import {MenuTestPage} from '../pages/MenuTestPage'
@@ -31,6 +32,8 @@ export function PrivateRoutes() {
         <Route path='/collectioncenter' component={Collectioncenter} />
         <Route path='/centertype' component={Centertype} />
         <Route path='/modules' component={Checklistmodules} />
+        <Route path='/checklist' component={Checklist} />
+
         {/* <Route path='/crafted/pages/profile' component={ProfilePage} /> */}
 
         {/* <Route path='/builder' component={BuilderPageWrapper} />

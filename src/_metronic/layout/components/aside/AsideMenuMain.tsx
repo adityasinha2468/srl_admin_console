@@ -50,6 +50,13 @@ export function AsideMenuMain() {
         title='Checklist Modules'
         fontIcon='bi-layers'
       />
+
+      <AsideMenuItem
+        to='/checklist'
+        icon='/media/icons/duotune/general/gen019.svg'
+        title='Checklist'
+        fontIcon='bi-layers'
+      />
        <div className='menu-item'> 
          <span
           className='menu-link'
