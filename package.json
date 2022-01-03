@@ -2,7 +2,7 @@
   "name": "demo1",
   "version": "8.0.28",
   "private": true,
-  "homepage": "/srl/adminconsole",
+  "homepage": "/metronic8/react/demo1",
   "dependencies": {
     "@formatjs/intl-pluralrules": "^4.0.28",
     "@formatjs/intl-relativetimeformat": "^9.1.7",
@@ -46,6 +46,7 @@
     "react-inlinesvg": "^2.3.0",
     "react-intl": "^5.20.4",
     "react-is": "^17.0.2",
+    "react-otp-input": "^2.4.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -61,7 +62,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "PORT=3003 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

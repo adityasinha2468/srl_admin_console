@@ -36,7 +36,7 @@ const initialState = {
 
 }
 
-const AddUser = (props: Props) => {
+const EditCheckList = (props: Props) => {
   const {id} = useParams<any>()
   let history = useHistory()
   const [state, setState] = useState<UserFrom>(initialState);
@@ -59,19 +59,48 @@ const {name,checklist_id, question, is_active,
     allApiCall()
   }, [])
   const allApiCall = async () => {
-    if(id) {
-      getCheckList()
+   let checklistModuleData: any = [];
+   let centerTypeListData: any = [];
+   const centerTypeListDataRes  = await getCenterTypeList();
+   const checklistDataRes  = await getCheckListModuleList();
+    if (centerTypeListDataRes.data.title === 'success') {
+        if(centerTypeListDataRes.data.data) {
+            centerTypeListDataRes.data.data.map((a:any)=>{
+                centerTypeListData.push({
+                label:a.center_type,
+                value:a.id
+                })
+            })
+            setCenterTypeList(centerTypeListData)
+        }
     }
 
-    await getCenterTypeList();
-    await getCheckListModuleList();
+    if (checklistDataRes.data.title === 'success') {
+        if(checklistDataRes.data.data) {
+            checklistDataRes.data.data.map((a:any)=>{
+                checklistModuleData.push({
+                label:a.name,
+                value:a.id
+                })
+            })
+            setChecklistModule(checklistModuleData)
+        }
+    }
+
+    await getCheckList({checklistModuleData, centerTypeListData})
   }
 
-  const getCheckList = async() => {
+  const getCheckList = async({centerTypeListData,checklistModuleData} : {centerTypeListData:any,checklistModuleData:any }) => {
     try {
       const result = await axios.post('/checklist/get', {id : id * 1});
      console.log("result",result);
-     let responseData = result.data.data
+     let responseData = result.data.data     
+     let centerTypeValue = centerTypeListData.length > 0 && centerTypeListData.filter((a :any) => responseData.center_type_ids.split(',').find((b:any) =>b == a.value)).map((el:any) => ({value:el.value, label:el.label}))
+     let checklistValue = checklistModuleData.length > 0 && checklistModuleData.find((el: any) => el.value === responseData.checklist_module_id)
+
+
+     setCenterTypeValue(centerTypeValue);
+     setChecklistValue(checklistValue);
      setState({
        ...state,
        name:responseData.name,
@@ -93,51 +122,18 @@ const {name,checklist_id, question, is_active,
   }
 
   const getCenterTypeList = async() => {
-    axios
+    return axios
       .post('/centertype/listcentertypes')
-      .then(function (response) {
-        // handle success
-        if (response?.data?.data[0]) {
-          let centerTypeArray : any = [];
-         response.data.data.map((a:any)=>{
-             centerTypeArray.push({
-               label:a.center_type,
-               value:a.id
-             })
-          })
-
-          setCenterTypeList(centerTypeArray)
-        }
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error, 'error')
-      })
+    
   }
 
   const getCheckListModuleList = async() => {
     let data:any  = [];
  
     // Make a request for a user with a given ID
-    axios
+   return axios
       .post('/checklistmodule/list')
-      .then(function (response) {
-        // handle success
-        if (response?.data?.data[0]) {
-          let checklistArray : any = [];
-         response.data.data.map((a:any)=>{
-          checklistArray.push({
-            label:a.name,
-            value:a.id
-          })
-        })
-        setChecklistModule(checklistArray)
-        }
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error, 'error')
-      })
+      
   }
 
  
@@ -344,4 +340,4 @@ const {name,checklist_id, question, is_active,
     </div>
   )
 }
-export default AddUser
+export default EditCheckList

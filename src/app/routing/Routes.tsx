@@ -16,7 +16,6 @@ import {RootState} from '../../setup'
 
 const Routes: FC = () => {
   const isAuthorized = useSelector<RootState>(({auth}) => auth.user, shallowEqual);
-  console.log("isAuthorized",isAuthorized);
   
 
   return (
@@ -28,7 +27,7 @@ const Routes: FC = () => {
         </Route>
       ) : (
         /*Otherwise redirect to root page (`/`)*/
-        <Redirect from='/auth' to='/' />
+        <Redirect from='/auth' to='/dashboard' />
       )}
 
       <Route path='/error' component={ErrorsPage} />

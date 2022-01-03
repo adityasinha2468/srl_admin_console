@@ -43,7 +43,7 @@ const UserList: React.FC<Props> = ({className}) => {
     const {id, is_active}  = obj
    
     axios
-    .post('/checklistmodule/activedeactivate',{id, is_active:is_active?0:1 })
+    .post('/checklist/activedeactivate',{id, is_active:is_active?0:1 })
     .then(function (response) {
       // handle success
      if(response.data.title === "success"){
@@ -117,7 +117,7 @@ const UserList: React.FC<Props> = ({className}) => {
                     <td>
                       <div className='d-flex justify-content-end flex-shrink-0'>
                         <Link 
-                        to={`modules/edit/${item.id}`}
+                        to={`checklist/edit/${item.id}`}
                           className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                         >
                           <KTSVG
