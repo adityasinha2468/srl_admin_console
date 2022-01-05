@@ -4,53 +4,40 @@ import axios from 'axios'
 import { CSVLink } from "react-csv";
 
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
+import { useSelector, RootStateOrAny} from 'react-redux'
 
 import {BrowserRouter, Switch, Route, useLocation, Link, useRouteMatch} from 'react-router-dom'
 type Props = {
   className: string
 }
 
-
-
 const UserList: React.FC<Props> = ({className}) => {
   const [userList, setUserList] = useState<any>([])
+  const {user} = useSelector((state: RootStateOrAny) => state.auth)
 
   useEffect(() => {
-    getUserList()
+    getCheckListModuleList()
   }, [])
 
-
-  const getRoles = () => {
-   return  axios
-      .get('/getuserroles')
-      
-  }
-
   
-  const getUserList = async() => {
+  const getCheckListModuleList = async() => {
     let data:any  = [];
-   let res =   await  getRoles()
-   if (res?.status === 200) {
-    data = res.data.data;
-   }
+ 
     // Make a request for a user with a given ID
+    let payload = {
+      user_id:user.id,
+      start_date:"",
+      end_date:"",
+      type:"",
+      target_type:""
+    }
     axios
-      .post('/listusers')
+      .post('/listuserwisetargets',payload)
       .then(function (response) {
         // handle success
         if (response?.data?.data[0]) {
-          
           setUserList(response.data.data.map((a:any)=>{
-            let rolesValue:any = [];
-            (a.roles.split(",")).forEach((c:any)=>{
-              let match =  data.find((b:any)=> b.id == c)
-                if(match){
-                  rolesValue.push(match.role)
-                }
-            })
-            a.rolesValue = rolesValue.toString()
-            return a
-
+            return a;
           }))
         }
       })
@@ -60,33 +47,19 @@ const UserList: React.FC<Props> = ({className}) => {
       })
   }
 
-  const deleteUser = (id: number) => {
-    axios
-      .post('/deleteuser', {id})
-      .then(function (response) {
-        // handle success
-        if(response.data.status){
-            getUserList();
-        }
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error, 'error')
-      })
-      .then(function () {
-        // always executed
-      })
-  }
+
 
   const handleChnageStatus = (obj:any) => {
     const {id, is_active}  = obj
    
     axios
-    .post('/activeDeactivateUser',{id, is_active:is_active?0:1 })
+    .post('/checklist/activedeactivate',{id, is_active:is_active?0:1 })
     .then(function (response) {
       // handle success
      if(response.data.title === "success"){
-      getUserList();
+       console.log(response);
+       getCheckListModuleList();
+       
      }
     })
     .catch(function (error) {
@@ -111,7 +84,7 @@ const UserList: React.FC<Props> = ({className}) => {
           data-bs-trigger='hover'
           title='Click to add a user'
         >
-           <CSVLink 
+            <CSVLink 
               data={userList} 
               filename="report.csv"  
               target="_blank"
@@ -125,9 +98,9 @@ const UserList: React.FC<Props> = ({className}) => {
             // data-bs-toggle='modal'
             // data-bs-target='#kt_modal_invite_friends'
           >
-            <Link to={'user/adduser'}>
+            <Link to={'/audit/add'}>
               <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
-             New User Management
+             New audit 
             </Link>
           </a>
         </div>
@@ -143,11 +116,9 @@ const UserList: React.FC<Props> = ({className}) => {
             <thead>
               <tr className='fw-bolder text-muted'>
                 <th className='min-w-40px'>id</th>
-                <th className='min-w-140px'>Name</th>
-                <th className='min-w-120px'>Email</th>
-                <th className='min-w-100px '>Mobile Number</th>
-                <th className='min-w-50px '>Status</th>
-                <th className='min-w-50px '>Roles</th>
+                <th className='min-w-40px'>Name</th>
+                <th className='min-w-140px'>Target</th>
+                <th className='min-w-140px'>Target achieved</th>
                 <th className='min-w-100px text-end'>Actions</th>
               </tr>
             </thead>
@@ -159,14 +130,12 @@ const UserList: React.FC<Props> = ({className}) => {
                   <tr key={key}>
                     <td>{item.id}</td>
                     <td>{item.name}</td>
-                    <td>{item.email}</td>
-                    <td>{item.mobile_number}</td>
-                    <td>{item.is_active === 1 ? <span style={{color:"green"}}>Active</span> : <span style={{color:"red"}}>InActive</span> }</td>
-                    <td>{item.rolesValue}</td>
+                    <td>{item.target}</td>
+                    <td>{item.target_achieved}</td>
                     <td>
                       <div className='d-flex justify-content-end flex-shrink-0'>
                         <Link 
-                        to={`user/editUser/${item.id}`}
+                        to={`audit/edit/${item.id}`}
                           className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
                         >
                           <KTSVG
@@ -174,10 +143,7 @@ const UserList: React.FC<Props> = ({className}) => {
                             className='svg-icon-3'
                           />
                         </Link>
-                        <span className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1' onClick={()=>{handleChnageStatus(item)}}>
-                        {item.is_active === 1?<i className="bi bi-check-square-fill" />
-                        :<i className="bi bi-check-square" />}
-                        </span>
+                     
                       </div>
                     </td>
                   </tr>

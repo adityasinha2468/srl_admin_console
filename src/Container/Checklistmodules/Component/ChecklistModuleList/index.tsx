@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
+import { CSVLink } from "react-csv";
 
 import {KTSVG, toAbsoluteUrl} from '../../../../_metronic/helpers'
 
@@ -74,6 +75,14 @@ const UserList: React.FC<Props> = ({className}) => {
           data-bs-trigger='hover'
           title='Click to add a user'
         >
+          <CSVLink 
+              data={userList} 
+              filename="report.csv"  
+              target="_blank"
+              className='btn btn-sm btn-light-primary me-5'
+              >
+             Download csv
+          </CSVLink>
           <a
             href='#'
             className='btn btn-sm btn-light-primary'
