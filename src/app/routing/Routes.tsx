@@ -27,7 +27,7 @@ const Routes: FC = () => {
         </Route>
       ) : (
         /*Otherwise redirect to root page (`/`)*/
-        <Redirect from='/auth' to='/dashboard' />
+        <Redirect from='/auth' to='/user' />
       )}
 
       <Route path='/error' component={ErrorsPage} />

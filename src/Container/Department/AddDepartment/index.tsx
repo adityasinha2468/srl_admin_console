@@ -110,8 +110,12 @@ const AddDepartment = () => {
     axios
       .post(url, payload)
       .then(function (response) {
-        // handle success
-        history.push('/department')
+        let data = response.data;
+        if(data.status) {
+          history.push('/department')
+        } else {
+          alert(data.message)
+        }
       })
       .catch(function (error) {
         // handle error

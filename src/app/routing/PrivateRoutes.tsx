@@ -27,7 +27,7 @@ export function PrivateRoutes() {
   return (
     <Suspense fallback={<FallbackView />}>
       <Switch>
-        <Route path='/dashboard' component={DashboardWrapper} />
+        {/* <Route path='/dashboard' component={DashboardWrapper} /> */}
         <Route path='/user' component={User} />
         <Route path='/department' component={Department} />
         <Route path='/collectioncenter' component={Collectioncenter} />

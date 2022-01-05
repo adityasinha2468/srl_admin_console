@@ -101,7 +101,7 @@ const {user_id, target, start_date, end_date, type, target_type, created_by} = s
     const payload = {
        id:id?id:undefined,
        user_id:auditorValue.value,
-       target:target,
+       target:target*1,
        start_date:start_date,
        end_date:end_date,
        type:type.value,
@@ -116,7 +116,13 @@ const {user_id, target, start_date, end_date, type, target_type, created_by} = s
       .post(url, payload)
       .then(function (response) {
         // handle success
-        history.push('/audit')
+        console.log(response);
+        let data = response.data;
+        if(data.status) {
+          history.push('/audit')
+        } else {
+          alert(data.message)
+        }
       })
       .catch(function (error) {
         // handle error

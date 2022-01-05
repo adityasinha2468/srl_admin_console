@@ -102,7 +102,7 @@ const {user_id, target, start_date, end_date, type, target_type, created_by} = s
     const payload = {
        id:id?id:undefined,
        user_id:auditorValue.value,
-       target:target,
+       target:target*1,
        start_date:start_date,
        end_date:end_date,
        type:type.value,

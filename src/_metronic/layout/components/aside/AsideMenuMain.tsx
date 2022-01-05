@@ -14,12 +14,12 @@ export function AsideMenuMain() {
   }
   return (
     <>
-      <AsideMenuItem
+      {/* <AsideMenuItem
         to='/dashboard'
         icon='/media/icons/duotune/art/art002.svg'
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
         fontIcon='bi-app-indicator'
-      />
+      /> */}
       <AsideMenuItem
         to='/user'
         icon='/media/icons/duotune/general/gen019.svg'
@@ -60,7 +60,7 @@ export function AsideMenuMain() {
         <AsideMenuItem
         to='/audit'
         icon='/media/icons/duotune/general/gen019.svg'
-        title='Audit'
+        title='Audit Target'
         fontIcon='bi-layers'
       />
 
