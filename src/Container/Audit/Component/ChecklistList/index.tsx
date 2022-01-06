@@ -25,7 +25,7 @@ const UserList: React.FC<Props> = ({className}) => {
  
     // Make a request for a user with a given ID
     let payload = {
-      user_id:user.id,
+      user_id:"",
       start_date:"",
       end_date:"",
       type:"",
