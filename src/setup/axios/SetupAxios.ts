@@ -20,5 +20,23 @@ export default function setupAxios(axios: any, store: any) {
       return config
     },
     (err: any) => Promise.reject(err)
-  )
+  );
+
+
+  let statusCode = [401, 403];
+  axios.interceptors.response.use(
+    (response: any) => {
+      return response;
+    },
+    (error: any) => {
+      if (error.response && statusCode.includes(error.response.status)) {
+        localStorage.clear();
+        window.location.href = `/auth/login`;
+      }
+  
+      return Promise.reject(error);
+    }
+  );
+
+  
 }

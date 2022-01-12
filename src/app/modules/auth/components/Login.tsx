@@ -24,6 +24,8 @@ const loginSchema = Yup.object().shape({
 
 
 const initialValues = {
+  // email: 'admin123@gmail.com',
+  // password: '123456',
   email: '',
   password: '',
 }
@@ -46,10 +48,11 @@ export function Login() {
           .then(({data: {token,status,message,payload}}) => {
             setLoading(false); 
             setSubmitting(false);
-            if(status) {
+            console.log("payload", payload);
+            if(status && payload.roles.some((role: any) => role.role === "Admin")) {
               dispatch(auth.actions.login(token,payload))
             } else {
-              setStatus(message)
+              setStatus("The login detail is incorrect")
             }
           
           })
